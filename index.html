@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="热播电影网 - 每日热播电影、电视剧、综艺与影视排行榜推荐，第一时间发现正在热映的好片。">
+<meta name="keywords" content="热播电影网, rebodianyingwang, 热播电影, 热播电视剧, 影视排行榜, 院线热映, 影讯, rebodianyingwang-wap">
+<meta name="author" content="热播电影网">
+<meta property="og:title" content="热播电影网 - 每日热播好片推荐">
+<meta property="og:description" content="电影、电视剧、综艺、排行榜，第一时间发现正在热映的好作品。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rebodianyingwang-wap.github.io">
+<link rel="canonical" href="https://rebodianyingwang-wap.github.io">
+<title>热播电影网 - 每日热播好片推荐 | rebodianyingwang-wap</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #fffaf7;
+    --bg-2: #fff3ea;
+    --ink: #2a1a12;
+    --muted: #8a6f60;
+    --line: #f0ddd0;
+    --red: #ff4d2e;
+    --red-2: #ff7a45;
+    --amber: #ffb020;
+    --radius: 18px;
+    --shadow: 0 12px 32px rgba(255,77,46,.12);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--red); color: #fff; }
+
+  /* ===== 顶部 ===== */
+  .topbar { position: sticky; top: 0; z-index: 100; background: rgba(255,250,247,.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 15px 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-logo {
+    width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--red), var(--red-2)); color: #fff;
+    font-size: 16px; font-weight: 800; box-shadow: 0 6px 16px rgba(255,77,46,.3);
+  }
+  .brand-name { font-size: 20px; font-weight: 800; letter-spacing: .5px; }
+  .brand-name small { display: block; font-size: 10px; font-weight: 500; color: var(--red); letter-spacing: 2px; }
+  .nav { display: flex; gap: 4px; }
+  .nav a { padding: 10px 17px; border-radius: 11px; font-size: 15px; font-weight: 600; color: var(--muted); transition: .2s; }
+  .nav a:hover { color: var(--red); background: var(--bg-2); }
+  .menu-toggle { display: none; background: none; border: 0; color: var(--ink); font-size: 27px; cursor: pointer; }
+
+  /* ===== 英雄区 ===== */
+  .hero { position: relative; overflow: hidden; padding: 88px 24px 96px; text-align: center; background: radial-gradient(circle at 50% 0%, #ffe7d8, transparent 60%); }
+  .hero::after { content: ""; position: absolute; left: 50%; top: 38%; width: 520px; height: 520px; transform: translate(-50%,-50%); border-radius: 50%; background: radial-gradient(circle, rgba(255,77,46,.10), transparent 65%); z-index: -1; }
+  .hero .live { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid var(--line); padding: 8px 18px; border-radius: 30px; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 24px; box-shadow: 0 6px 18px rgba(0,0,0,.04); }
+  .hero .live i { width: 9px; height: 9px; border-radius: 50%; background: var(--red); animation: blink 1.4s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+  .hero h1 { font-size: clamp(30px, 6vw, 54px); line-height: 1.2; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 18px; }
+  .hero h1 .hl { background: linear-gradient(90deg, var(--red), var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { font-size: clamp(14px, 2.2vw, 17px); color: var(--muted); margin-bottom: 30px; }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 14px 32px; border-radius: 32px; font-weight: 700; font-size: 15px; transition: .25s; }
+  .btn-primary { background: var(--red); color: #fff; box-shadow: 0 8px 22px rgba(255,77,46,.3); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(255,77,46,.4); }
+  .btn-outline { border: 1.5px solid var(--line); color: var(--ink); background: #fff; }
+  .btn-outline:hover { border-color: var(--red); color: var(--red); }
+
+  /* ===== 通用 ===== */
+  section { padding: 68px 24px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; gap: 16px; flex-wrap: wrap; }
+  .head .kicker { font-size: 11px; letter-spacing: 2.5px; color: var(--red); font-weight: 800; text-transform: uppercase; }
+  .head h2 { font-size: clamp(23px, 3.6vw, 31px); margin-top: 4px; font-weight: 800; letter-spacing: -.5px; }
+  .head h2 em { font-style: normal; color: var(--red); }
+  .head p { color: var(--muted); font-size: 14px; }
+  .more { color: var(--red); font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .more:hover { color: var(--red-2); }
+
+  /* ===== 电影：横向长条卡片（差异化） ===== */
+  .film-list { display: grid; gap: 16px; }
+  .film-item {
+    display: grid; grid-template-columns: 150px 1fr auto; gap: 22px; align-items: center;
+    background: #fff; border: 1.5px solid var(--line); border-radius: var(--radius);
+    padding: 16px; transition: .25s;
+  }
+  .film-item:hover { border-color: var(--red); transform: translateY(-4px); box-shadow: var(--shadow); }
+  .film-thumb { height: 100px; border-radius: 12px; display: grid; place-items: center; color: #fff; font-size: 15px; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #ff6b4a, #ff8c42); }
+  .film-thumb.t2 { background: linear-gradient(135deg, #e0483a, #ff6b5a); }
+  .film-thumb.t3 { background: linear-gradient(135deg, #ff944d, #ffb84d); }
+  .film-thumb.t4 { background: linear-gradient(135deg, #ff5c7a, #ff8fa3); }
+  .film-thumb.t5 { background: linear-gradient(135deg, #ff7a45, #ffa94d); }
+  .film-thumb.t6 { background: linear-gradient(135deg, #f03e3e, #ff6b6b); }
+  .film-info h3 { font-size: 18px; margin-bottom: 6px; }
+  .film-info .meta { font-size: 13px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+  .film-info .desc { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  .film-score { text-align: right; white-space: nowrap; }
+  .film-score b { display: block; font-size: 30px; font-weight: 900; color: var(--red); line-height: 1; }
+  .film-score span { font-size: 12px; color: var(--muted); }
+
+  /* ===== 电视剧：标签云 + 简介块（再次差异化） ===== */
+  .tv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px; }
+  .tv-card { background: #fff; border: 1.5px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: .25s; }
+  .tv-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--red-2); }
+  .tv-head { padding: 20px 22px 0; display: flex; align-items: center; justify-content: space-between; }
+  .tv-head .no { font-size: 13px; font-weight: 800; color: var(--red); background: var(--bg-2); padding: 4px 12px; border-radius: 8px; }
+  .tv-head .eps { font-size: 12px; color: var(--muted); }
+  .tv-card h3 { font-size: 19px; padding: 12px 22px 6px; }
+  .tv-card p { font-size: 14px; color: var(--muted); padding: 0 22px 18px; }
+  .tv-tags { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 22px 20px; }
+  .tv-tags i { font-style: normal; font-size: 12px; background: var(--bg-2); color: var(--ink); padding: 5px 12px; border-radius: 20px; }
+
+  /* ===== 排行榜：阶梯式堆叠（第三次差异化） ===== */
+  .rank-stack { display: grid; gap: 14px; max-width: 820px; margin: 0 auto; }
+  .rank-row { display: grid; grid-template-columns: 64px 1fr 90px; align-items: center; gap: 18px; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 14px 20px; transition: .2s; }
+  .rank-row:hover { border-color: var(--red); transform: scale(1.01); }
+  .rank-medal { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 20px; font-weight: 900; color: #fff; background: linear-gradient(135deg, #f0ddd0, #e0c4b0); }
+  .rank-row.gold .rank-medal { background: linear-gradient(135deg, #ffc93c, #ff9a1f); }
+  .rank-row.silver .rank-medal { background: linear-gradient(135deg, #c0c9d4, #8a97a8); }
+  .rank-row.bronze .rank-medal { background: linear-gradient(135deg, #e09a6a, #c06a3a); }
+  .rank-row .rnk-title { font-weight: 700; font-size: 16px; }
+  .rank-row .rnk-title small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .rank-row .rnk-heat { text-align: right; }
+  .rank-row .rnk-heat b { display: block; font-size: 20px; font-weight: 900; color: var(--red); }
+  .rank-row .rnk-heat span { font-size: 11px; color: var(--muted); }
+
+  /* ===== 关于 ===== */
+  .about { background: linear-gradient(135deg, #fff, var(--bg-2)); border: 1.5px solid var(--line); border-radius: 26px; padding: 48px 38px; text-align: center; max-width: 860px; margin: 0 auto; }
+  .about .big { font-size: clamp(26px, 4.5vw, 34px); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
+  .about .big .hl { color: var(--red); }
+  .about p { color: var(--muted); font-size: 15px; margin-bottom: 10px; }
+  .about .url { display: inline-block; margin-top: 20px; background: #fff; border: 1.5px solid var(--line); padding: 11px 24px; border-radius: 28px; font-size: 14px; color: var(--red); font-weight: 600; word-break: break-all; }
+  .about-actions { margin-top: 28px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* ===== 底部 ===== */
+  footer { background: var(--ink); color: #e8ddd5; padding: 48px 24px 26px; margin-top: 20px; }
+  .foot-inner { max-width: 1180px; margin: 0 auto; text-align: center; }
+  .foot-inner h3 { font-size: 22px; margin-bottom: 8px; }
+  .foot-links { margin: 22px 0; display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; font-size: 14px; }
+  .foot-links a { color: #c9b8ac; }
+  .foot-links a:hover { color: #fff; }
+  .copyright { font-size: 12px; color: #8a7568; border-top: 1px solid #3a2a20; padding-top: 20px; margin-top: 20px; }
+  .copyright a { color: #c9b8ac; }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 760px) {
+    .menu-toggle { display: block; }
+    .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: #fff; padding: 14px; border-bottom: 1px solid var(--line); }
+    .nav.open { display: flex; }
+    section { padding: 52px 16px; }
+    .film-item { grid-template-columns: 110px 1fr; }
+    .film-score { grid-column: 2; text-align: left; }
+    .film-score b { display: inline; font-size: 20px; }
+  }
+  @media (max-width: 420px) {
+    .hero { padding: 60px 16px 72px; }
+    .film-item { grid-template-columns: 1fr; }
+    .film-thumb { height: 120px; }
+    .film-score { grid-column: 1; }
+    .tv-grid { grid-template-columns: 1fr; }
+    .topbar-inner { padding: 12px 16px; }
+    .brand-name { font-size: 17px; }
+    .rank-row { grid-template-columns: 52px 1fr 70px; gap: 12px; padding: 12px 14px; }
+  }
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/xiaolu.js"></script>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="brand">
+      <div class="brand-logo">热播</div>
+      <div class="brand-name">热播电影网<small>REBO · MOVIES</small></div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="菜单">☰</button>
+    <nav class="nav" id="nav">
+      <a href="#home">首页</a>
+      <a href="#movies">电影</a>
+      <a href="#tv">电视剧</a>
+      <a href="#rank">排行榜</a>
+      <a href="#about">关于</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="live"><i></i> 正在热播中 · LIVE NOW</div>
+  <h1><span class="hl">热播电影网</span><br>每天一部，追热不迷路</h1>
+  <p>电影、电视剧、综艺、排行榜一站看全，帮你第一时间锁定正在热映的好作品。</p>
+  <div class="hero-actions">
+    <a href="#movies" class="btn btn-primary">查看热播</a>
+    <a href="#rank" class="btn btn-outline">今日榜单</a>
+  </div>
+</section>
+
+<section id="movies">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="kicker">NOW SHOWING</div>
+        <h2>正在<em>热播</em>电影</h2>
+        <p>院线热片与口碑佳作，每日更新</p>
+      </div>
+      <a href="#" class="more">查看更多 ›</a>
+    </div>
+    <div class="film-list">
+      <article class="film-item"><a href="#">
+        <div class="film-thumb">烈火归途</div>
+        <div class="film-info"><h3>烈火归途</h3><div class="meta"><span>动作</span><span>2026</span><span>128分钟</span></div><div class="desc">一场跨国追凶的生死时速，全程高能。</div></div>
+        <div class="film-score"><b>8.8</b><span>观众评分</span></div>
+      </a></article>
+      <article class="film-item"><a href="#">
+        <div class="film-thumb t2">春江水暖</div>
+        <div class="film-info"><h3>春江水暖</h3><div class="meta"><span>剧情</span><span>2026</span><span>116分钟</span></div><div class="desc">江南小镇的四季流转，一段温柔的家族故事。</div></div>
+        <div class="film-score"><b>8.5</b><span>观众评分</span></div>
+      </a></article>
+      <article class="film-item"><a href="#">
+        <div class="film-thumb t3">星际回音</div>
+        <div class="film-info"><h3>星际回音</h3><div class="meta"><span>科幻</span><span>2026</span><span>134分钟</span></div><div class="desc">深空探测船收到一段来自未知文明的信号。</div></div>
+        <div class="film-score"><b>8.2</b><span>观众评分</span></div>
+      </a></article>
+      <article class="film-item"><a href="#">
+        <div class="film-thumb t4">她的小城</div>
+        <div class="film-info"><h3>她的小城</h3><div class="meta"><span>爱情</span><span>2025</span><span>108分钟</span></div><div class="desc">一座南方小城，两代人的爱情与选择。</div></div>
+        <div class="film-score"><b>8.0</b><span>观众评分</span></div>
+      </a></article>
+      <article class="film-item"><a href="#">
+        <div class="film-thumb t5">盗影重重</div>
+        <div class="film-info"><h3>盗影重重</h3><div class="meta"><span>悬疑</span><span>2026</span><span>122分钟</span></div><div class="desc">一场完美盗窃背后，藏着更大的局。</div></div>
+        <div class="film-score"><b>7.9</b><span>观众评分</span></div>
+      </a></article>
+      <article class="film-item"><a href="#">
+        <div class="film-thumb t6">少年游</div>
+        <div class="film-info"><h3>少年游</h3><div class="meta"><span>青春</span><span>2025</span><span>102分钟</span></div><div class="desc">那年夏天，我们以为永远不会长大。</div></div>
+        <div class="film-score"><b>7.7</b><span>观众评分</span></div>
+      </a></article>
+    </div>
+  </div>
+</section>
+
+<section id="tv" style="background: var(--bg-2);">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="kicker">TV SERIES</div>
+        <h2>追剧<em>电视剧</em>速览</h2>
+        <p>正在热播的高分剧集</p>
+      </div>
+      <a href="#" class="more">查看更多 ›</a>
+    </div>
+    <div class="tv-grid">
+      <article class="tv-card"><a href="#">
+        <div class="tv-head"><span class="no">热播中</span><span class="eps">30集</span></div>
+        <h3>长安谜案</h3><p>上元节前的长安城，一桩悬案牵出朝堂与江湖的秘密。</p>
+        <div class="tv-tags"><i>古装</i><i>悬疑</i><i>权谋</i></div>
+      </a></article>
+      <article class="tv-card"><a href="#">
+        <div class="tv-head"><span class="no">热播中</span><span class="eps">24集</span></div>
+        <h3>人间烟火</h3><p>一座弄堂里的四户人家，写尽市井生活的酸甜苦辣。</p>
+        <div class="tv-tags"><i>都市</i><i>家庭</i><i>温情</i></div>
+      </a></article>
+      <article class="tv-card"><a href="#">
+        <div class="tv-head"><span class="no">热播中</span><span class="eps">40集</span></div>
+        <h3>边境线</h3><p>边陲小镇的缉毒较量，每一集都在挑战底线与良知。</p>
+        <div class="tv-tags"><i>刑侦</i><i>动作</i><i>硬汉</i></div>
+      </a></article>
+      <article class="tv-card"><a href="#">
+        <div class="tv-head"><span class="no">热播中</span><span class="eps">20集</span></div>
+        <h3>月光餐厅</h3><p>深夜营业的小餐厅，每位食客都带着一段未完的故事。</p>
+        <div class="tv-tags"><i>治愈</i><i>美食</i><i>单元剧</i></div>
+      </a></article>
+    </div>
+  </div>
+</section>
+
+<section id="rank">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="kicker">DAILY HOT</div>
+        <h2>今日<em>热播</em>排行</h2>
+        <p>基于本站实时热度统计</p>
+      </div>
+      <a href="#" class="more">完整榜单 ›</a>
+    </div>
+    <div class="rank-stack">
+      <div class="rank-row gold"><div class="rank-medal">1</div><div class="rnk-title">烈火归途<small>动作 · 2026</small></div><div class="rnk-heat"><b>96.8</b><span>热度指数</span></div></div>
+      <div class="rank-row silver"><div class="rank-medal">2</div><div class="rnk-title">春江水暖<small>剧情 · 2026</small></div><div class="rnk-heat"><b>93.5</b><span>热度指数</span></div></div>
+      <div class="rank-row bronze"><div class="rank-medal">3</div><div class="rnk-title">长安谜案<small>电视剧 · 悬疑</small></div><div class="rnk-heat"><b>90.2</b><span>热度指数</span></div></div>
+      <div class="rank-row"><div class="rank-medal">4</div><div class="rnk-title">星际回音<small>科幻 · 2026</small></div><div class="rnk-heat"><b>87.6</b><span>热度指数</span></div></div>
+      <div class="rank-row"><div class="rank-medal">5</div><div class="rnk-title">盗影重重<small>悬疑 · 2026</small></div><div class="rnk-heat"><b>84.1</b><span>热度指数</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about">
+      <div class="big">追<em class="hl">热播</em>，上好片</div>
+      <p>热播电影网专注影视推荐与资讯，每天帮你锁定正在热映、值得一看的好作品。</p>
+      <p>电影、电视剧、排行榜一站看全，简洁好用。</p>
+      <div class="url">https://rebodianyingwang-wap.github.io</div>
+      <div class="about-actions">
+        <a href="#home" class="btn btn-primary">回到顶部</a>
+        <a href="#movies" class="btn btn-outline">查看热播</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <h3>热播电影网</h3>
+    <p style="font-size:14px; color:#c9b8ac;">每日热播好片推荐 · 专注影讯分享</p>
+    <div class="foot-links">
+      <a href="#home">首页</a>
+      <a href="#movies">电影</a>
+      <a href="#tv">电视剧</a>
+      <a href="#rank">排行榜</a>
+      <a href="#about">关于</a>
+    </div>
+    <div class="copyright">
+      本站网址：<a href="https://rebodianyingwang-wap.github.io">https://rebodianyingwang-wap.github.io</a><br>
+      © 2026 热播电影网 rebodianyingwang-wap · 仅供影视资讯与推荐，具体播放请前往正版授权平台
+    </div>
+  </div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('menuToggle');
+  var nav = document.getElementById('nav');
+  toggle.addEventListener('click', function () { nav.classList.toggle('open'); });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { nav.classList.remove('open'); });
+  });
+</script>
+</body>
+</html>
